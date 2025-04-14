@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tier hinzufügen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Neues Tier hinzufügen</h1>
+    <form id="addTierForm">
+        <div>
+            <label for="tierart">Tierart:</label>
+            <input type="text" id="tierart" name="tierart" required>
+        </div>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="krankheit">Krankheit:</label>
+            <input type="text" id="krankheit" name="krankheit">
+        </div>
+        <div>
+            <label for="age">Alter:</label>
+            <input type="number" id="age" name="age" min="0">
+        </div>
+        <div>
+            <label for="gewicht">Gewicht:</label>
+            <input type="number" step="0.1" id="gewicht" name="gewicht" min="0">
+        </div>
+        <button type="submit">Tier hinzufügen</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
