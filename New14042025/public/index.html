@@ -1,39 +1,69 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tier hinzufügen</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Neues Tier hinzufügen</h1>
-    <form id="addTierForm">
-        <div>
-            <label for="tierart">Tierart:</label>
-            <input type="text" id="tierart" name="tierart" required>
-        </div>
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div>
-            <label for="krankheit">Krankheit:</label>
-            <input type="text" id="krankheit" name="krankheit">
-        </div>
-        <div>
-            <label for="age">Alter:</label>
-            <input type="number" id="age" name="age" min="0">
-        </div>
-        <div>
-            <label for="gewicht">Gewicht:</label>
-            <input type="number" step="0.1" id="gewicht" name="gewicht" min="0">
-        </div>
-        <button type="submit">Tier hinzufügen</button>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <button>Home</button>
+      <button id="buttonShowAnimals">Tiere Anzeigen</button>
+      <button id="showAddAnimalForm">Tier hinzufügen</button>
+    </header>
+
+    <div>
+      <h1>Happy Pets</h1>
+      <h2>Die erste Klinik von Tieren für Tiere</h2>
+      <hr />
+      <div id="content">
+        <img
+          src="https://independent-animal-clinic.com/cdn/shop/files/slider4.jpg?v=1704046978&width=3840"
+          alt="bild"
+        />
+      </div>
+    </div>
+
+
+    <form id="addTierForm" hidden>
+        <label>
+            Tierart:
+            <input type="text" name="tierart" required>
+        </label>
+        <label>
+            Name:
+            <input type="text" name="name" required>
+        </label>
+        <label>
+            Krankheit:
+            <input type="text" name="krankheit" required>
+        </label>
+        <label>
+            Alter:
+            <input type="number" name="age" required>
+        </label>
+        <label>
+            Gewicht:
+            <input type="number" name="gewicht" step="0.1" required>
+        </label>
+        <button type="submit">Hinzufügen</button>
     </form>
 
-    <div id="message"></div>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Tierart</th>
+                <th>Name</th>
+                <th>Krankheit</th>
+                <th>Alter</th>
+                <th>Gewicht</th>
+                <th>Optionen</th>
+            </tr>
+        </thead>
 
-    <script src="script.js"></script>
-</body>
+        <tbody id="showAnimals"></tbody>
+    </table>
+  </body>
 </html>

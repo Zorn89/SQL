@@ -1,42 +1,114 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const addTierForm = document.getElementById('addTierForm');
-    const messageDiv = document.getElementById('message');
+const buttonShowAnimals = document.getElementById("buttonShowAnimals")
+const showAnimals = document.getElementById("showAnimals")
+const addTierForm = document.getElementById("addTierForm")
+const showAddAnimalForm = document.getElementById("showAddAnimalForm")
+const content = document.getElementById("content")
 
-    addTierForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Verhindert das Standardmäßige Absenden des Formulars
+// ##################################################################
 
-        const formData = new FormData(addTierForm);
-        const tierData = {
-            tierart: formData.get('tierart'),
-            name: formData.get('name'),
-            krankheit: formData.get('krankheit'),
-            age: parseInt(formData.get('age')),
-            gewicht: parseFloat(formData.get('gewicht'))
-        };
+// Button  um das Formular anzuzeigen
 
-        try {
-            const response = await fetch('/tiere', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(tierData)
-            });
+showAddAnimalForm.addEventListener("click", () => {
+    addTierForm.hidden = false;
+    content.hidden = true;
+})
 
-            const result = await response.text(); // Liest den Antworttext
+// ##################################################################
 
-            if (response.ok) {
-                messageDiv.textContent = result; // Zeigt die Erfolgsmeldung vom Server an
-                messageDiv.style.color = 'green';
-                addTierForm.reset(); // Leert das Formular
-            } else {
-                messageDiv.textContent = `Fehler beim Hinzufügen des Tiers: ${result}`; // Zeigt die Fehlermeldung vom Server an
-                messageDiv.style.color = 'red';
-            }
-        } catch (error) {
-            console.error('Netzwerkfehler:', error);
-            messageDiv.textContent = 'Netzwerkfehler beim Senden der Anfrage.';
-            messageDiv.style.color = 'red';
-        }
-    });
+// Alle Tiere Anzeigenb lassen 
+
+buttonShowAnimals.addEventListener("click", async () => {
+    const res = await fetch("http://127.0.0.1:3000/tiere")
+    displayData(await res.json())
+
+    function displayData(data) {
+        console.log(data)
+        showAnimals.innerHTML = "";
+
+        // Wir starten eine Schleife für jeden Eintrag aus der Datenbank
+        data.forEach(tier => {
+            console.log(tier)
+
+            // erst wird das Zeilenelement für die Tabelle erstellt
+            const row = document.createElement("tr");
+
+            const tierart = document.createElement("td")
+            tierart.textContent = tier.tierart;
+            row.appendChild(tierart);
+
+            
+            const name = document.createElement("td")
+            name.textContent = tier.name;
+            row.appendChild(name);
+
+
+            const krankheit = document.createElement("td")
+            krankheit.textContent = tier.krankheit;
+            row.appendChild(krankheit);
+
+
+            const alter = document.createElement("td")
+            alter.textContent = tier.age;
+            row.appendChild(alter);
+
+
+            const gewicht = document.createElement("td")
+            gewicht.textContent = tier.gewicht;
+            row.appendChild(gewicht);
+
+            const deleteButtonFeld = document.createElement("td");
+
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Löschen"
+            deleteButton.addEventListener("click", () => deleteAnimal(tier.id))
+
+            deleteButtonFeld.appendChild(deleteButton)
+            row.appendChild(deleteButtonFeld);
+
+            showAnimals.appendChild(row);
+
+        });
+    }
+
 });
+
+// ##################################################################
+
+// Formular auslesen und POST senden
+
+addTierForm.addEventListener("submit", async (event) => {
+    event.preventDefault()
+
+    // Alle Inputfelder auswählen und ein Object erstellen
+
+    const newAnimal = {};
+    const inputs = addTierForm.querySelectorAll("input[name]")
+    inputs.forEach((input) => {
+        newAnimal[input.name] = input.value
+    })
+
+    await fetch("http://127.0.0.1:3000/tiere", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newAnimal)
+    });
+    
+    addTierForm.reset();
+    buttonShowAnimals.click()
+    addTierForm.hidden = true;
+    content.hidden = false;
+})
+
+
+// ##################################################################
+
+// löschfunktion
+
+async function deleteAnimal(id) {
+    await fetch(`http://127.0.0.1:3000/tiere/${id}`, {
+        method: "DELETE"
+    });
+    buttonShowAnimals.click();
+}
